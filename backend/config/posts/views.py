@@ -1,10 +1,12 @@
 from rest_framework import status, viewsets
-from rest_framework.decorators import action
+from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.parsers import MultiPartParser, FormParser
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
+from django.db.models import Count
 
 from .models import Post
 from .serializers import PostSerializer
@@ -13,25 +15,45 @@ User = get_user_model()
 
 class PostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
+    parser_classes = [MultiPartParser, FormParser]
 
     def get_queryset(self):
         queryset = Post.objects.select_related('author', 'author__profile')
         if self.action in {'retrieve', 'update', 'partial_update', 'destroy', 'reply', 'like', 'save', 'rescrawl'}:
             return queryset
         if self.action == 'my_posts':
-            return queryset.filter(author=self.request.user, parent__isnull=True)
+            return queryset.filter(
+                author=self.request.user,
+                parent__isnull=True,
+                is_anonymous=False
+            )
         if self.action == 'user_posts':
-            return queryset.filter(author_id=self.kwargs.get('user_id'), parent__isnull=True)
+            return queryset.filter(
+                author_id=self.kwargs.get('user_id'),
+                parent__isnull=True,
+                is_anonymous=False
+            )
         if self.action == 'saved':
             return queryset.filter(saved_by=self.request.user, parent__isnull=True)
         if self.action == 'rescrawled':
             return queryset.filter(rescrawls=self.request.user, parent__isnull=True)
+        if self.action == 'user_rescrawled':
+            return queryset.filter(
+                rescrawls__id=self.kwargs.get('user_id'),
+                parent__isnull=True
+            ).distinct()
         if self.action == 'replies':
             return queryset.filter(parent_id=self.kwargs.get('pk'))
+        # For list action, filter by faculty if provided
+        if self.action == 'list':
+            faculty = self.request.query_params.get('faculty')
+            if faculty and faculty != 'all':
+                queryset = queryset.filter(faculty=faculty)
+            return queryset.filter(parent__isnull=True).order_by('-created_at')
         return queryset.filter(parent__isnull=True).order_by('-created_at')
 
     def get_permissions(self):
-        if self.action in {'list', 'retrieve', 'user_posts', 'replies'}:
+        if self.action in {'list', 'retrieve', 'user_posts', 'user_rescrawled', 'replies'}:
             return [AllowAny()]
         return [IsAuthenticated()]
 
@@ -116,6 +138,12 @@ class PostViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
+    @action(detail=False, methods=['get'], permission_classes=[AllowAny], url_path=r'user/(?P<user_id>\d+)/rescrawled')
+    def user_rescrawled(self, request, user_id=None):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
     @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated], url_path='reply')
     def reply(self, request, pk=None):
         parent_post = self.get_object()
@@ -153,3 +181,12 @@ class UserStatsView(APIView):
             },
             status=status.HTTP_200_OK,
         )
+
+
+@api_view(['GET'])
+def community_counts(request):
+    """Get post counts for each faculty/community"""
+    data = Post.objects.values('faculty').annotate(count=Count('id')).order_by('-count')
+    # Convert to dict with faculty as key for easier frontend consumption
+    result = {item['faculty']: item['count'] for item in data}
+    return Response(result)

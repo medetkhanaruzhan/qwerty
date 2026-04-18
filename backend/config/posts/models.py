@@ -2,6 +2,18 @@ from django.db import models
 from django.conf import settings
 
 
+FACULTY_CHOICES = [
+    ('fit', 'IT & Engineering'),
+    ('bs', 'Business School'),
+    ('ise', 'Economics'),
+    ('feogi', 'Oil & Gas'),
+    ('smsgt', 'Social Sciences'),
+    ('kma', 'Maritime'),
+    ('sam', 'Applied Math'),
+    ('sce', 'Chemical Engineering'),
+]
+
+
 class Post(models.Model):
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -11,6 +23,12 @@ class Post(models.Model):
     content = models.TextField()
     mood = models.CharField(max_length=20, blank=True, default='')
     is_anonymous = models.BooleanField(default=False)
+    image = models.ImageField(upload_to='posts/', null=True, blank=True)
+    faculty = models.CharField(
+        max_length=20,
+        choices=FACULTY_CHOICES,
+        default='fit'
+    )
     parent = models.ForeignKey(
         'self',
         null=True,

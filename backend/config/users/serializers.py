@@ -5,6 +5,42 @@ from .models import Profile
 
 User = get_user_model()
 
+
+class SimpleUserSerializer(serializers.ModelSerializer):
+    """Minimal user serializer for followers/following lists"""
+    avatar = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'first_name', 'last_name', 'avatar')
+
+    def get_avatar(self, obj):
+        if hasattr(obj, 'profile') and obj.profile.avatar:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.profile.avatar.url)
+            return obj.profile.avatar.url
+        return None
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    """User profile serializer for public profile lookup"""
+    avatar = serializers.SerializerMethodField()
+    bio = serializers.CharField(source='profile.bio', read_only=True, default='')
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'first_name', 'last_name', 'avatar', 'bio')
+
+    def get_avatar(self, obj):
+        if hasattr(obj, 'profile') and obj.profile.avatar:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.profile.avatar.url)
+            return obj.profile.avatar.url
+        return None
+
+
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile

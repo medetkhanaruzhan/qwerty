@@ -32,6 +32,9 @@ class PostSerializer(serializers.ModelSerializer):
     is_rescrawled = serializers.SerializerMethodField()
     replies_count = serializers.SerializerMethodField()
     is_reply = serializers.SerializerMethodField()
+    image = serializers.SerializerMethodField()
+    image_file = serializers.ImageField(source='image', required=False, allow_null=True, write_only=True)
+    faculty = serializers.CharField(required=False, allow_blank=True)
 
     class Meta:
         model = Post
@@ -40,6 +43,9 @@ class PostSerializer(serializers.ModelSerializer):
             'content',
             'mood',
             'is_anonymous',
+            'image',
+            'image_file',
+            'faculty',
             'parent',
             'created_at',
             'updated_at',
@@ -70,6 +76,9 @@ class PostSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         validated_data['author'] = self.context['request'].user
+        # Set default faculty if not provided
+        if not validated_data.get('faculty'):
+            validated_data['faculty'] = 'fit'
         return super().create(validated_data)
 
     def _get_user(self):
@@ -104,3 +113,11 @@ class PostSerializer(serializers.ModelSerializer):
 
     def get_is_reply(self, obj):
         return obj.parent_id is not None
+
+    def get_image(self, obj):
+        if obj.image:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.image.url)
+            return obj.image.url
+        return None
