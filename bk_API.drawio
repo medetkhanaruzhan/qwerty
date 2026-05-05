@@ -1,0 +1,99 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Page-1" id="ickkyZ-bJ2scyb8hWgc3">
+    <mxGraphModel dx="665" dy="429" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="K454XlzO2SYgQW8Kxkkl-2" parent="1" style="rounded=1;whiteSpace=wrap;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;fontStyle=1;fontSize=13;" value="Клиенты / Apps" vertex="1">
+          <mxGeometry height="44" width="180" x="280" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="K454XlzO2SYgQW8Kxkkl-3" edge="1" parent="1" source="K454XlzO2SYgQW8Kxkkl-2" style="edgeStyle=orthogonalEdgeStyle;" target="K454XlzO2SYgQW8Kxkkl-4" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="K454XlzO2SYgQW8Kxkkl-4" parent="1" style="rounded=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;" value="API Gateway&#xa;Rate limiting, auth, routing" vertex="1">
+          <mxGeometry height="56" width="280" x="230" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="K454XlzO2SYgQW8Kxkkl-5" edge="1" parent="1" source="K454XlzO2SYgQW8Kxkkl-4" style="edgeStyle=orthogonalEdgeStyle;fontSize=11;" target="K454XlzO2SYgQW8Kxkkl-6" value="POST /orders">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="K454XlzO2SYgQW8Kxkkl-6" parent="1" style="rounded=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;" value="Message Queue (Kafka / RabbitMQ)&#xa;Буферизация потока, at-most-once&lt;/font&gt;" vertex="1">
+          <mxGeometry height="56" width="380" x="180" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="K454XlzO2SYgQW8Kxkkl-7" edge="1" parent="1" source="K454XlzO2SYgQW8Kxkkl-6" style="edgeStyle=orthogonalEdgeStyle;" target="K454XlzO2SYgQW8Kxkkl-10" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="370" y="360" />
+              <mxPoint x="140" y="360" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="K454XlzO2SYgQW8Kxkkl-8" edge="1" parent="1" source="K454XlzO2SYgQW8Kxkkl-6" style="edgeStyle=orthogonalEdgeStyle;" target="K454XlzO2SYgQW8Kxkkl-11" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="K454XlzO2SYgQW8Kxkkl-9" edge="1" parent="1" source="K454XlzO2SYgQW8Kxkkl-6" style="edgeStyle=orthogonalEdgeStyle;" target="K454XlzO2SYgQW8Kxkkl-12" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="370" y="360" />
+              <mxPoint x="600" y="360" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="K454XlzO2SYgQW8Kxkkl-10" parent="1" style="rounded=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;" value="Worker 1&#xa;Обрабатывает заказы" vertex="1">
+          <mxGeometry height="56" width="160" x="30" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="K454XlzO2SYgQW8Kxkkl-11" parent="1" style="rounded=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;" value="Worker 2&#xa;Обрабатывает заказы" vertex="1">
+          <mxGeometry height="56" width="160" x="290" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="K454XlzO2SYgQW8Kxkkl-12" parent="1" style="rounded=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;" value="Worker N&#xa;Обрабатывает заказы" vertex="1">
+          <mxGeometry height="56" width="160" x="520" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="K454XlzO2SYgQW8Kxkkl-13" edge="1" parent="1" source="K454XlzO2SYgQW8Kxkkl-10" style="edgeStyle=orthogonalEdgeStyle;" target="K454XlzO2SYgQW8Kxkkl-16" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="160" y="490" />
+              <mxPoint x="370" y="490" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="K454XlzO2SYgQW8Kxkkl-14" edge="1" parent="1" source="K454XlzO2SYgQW8Kxkkl-11" style="edgeStyle=orthogonalEdgeStyle;" target="K454XlzO2SYgQW8Kxkkl-16" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="K454XlzO2SYgQW8Kxkkl-15" edge="1" parent="1" source="K454XlzO2SYgQW8Kxkkl-12" style="edgeStyle=orthogonalEdgeStyle;exitX=0;exitY=0.75;exitDx=0;exitDy=0;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="510" y="490" as="sourcePoint" />
+            <mxPoint x="370.02857142857135" y="638.47" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="K454XlzO2SYgQW8Kxkkl-16" parent="1" style="rounded=1;whiteSpace=wrap;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=13;" value="База данных (Primary)&#xa;PostgreSQL / MongoDB" vertex="1">
+          <mxGeometry height="56" width="240" x="250" y="620" as="geometry" />
+        </mxCell>
+        <mxCell id="K454XlzO2SYgQW8Kxkkl-17" edge="1" parent="1" source="K454XlzO2SYgQW8Kxkkl-16" style="edgeStyle=orthogonalEdgeStyle;fontSize=11;" target="K454XlzO2SYgQW8Kxkkl-18" value="replication">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="K454XlzO2SYgQW8Kxkkl-18" parent="1" style="rounded=1;whiteSpace=wrap;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=13;" value="Replica&#xa;Чтение" vertex="1">
+          <mxGeometry height="56" width="120" x="560" y="557" as="geometry" />
+        </mxCell>
+        <mxCell id="K454XlzO2SYgQW8Kxkkl-19" parent="1" style="rounded=1;whiteSpace=wrap;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=13;" value="Cache (Redis)&#xa;Статусы, dedup" vertex="1">
+          <mxGeometry height="56" width="150" x="10" y="620" as="geometry" />
+        </mxCell>
+        <mxCell id="K454XlzO2SYgQW8Kxkkl-20" edge="1" parent="1" source="K454XlzO2SYgQW8Kxkkl-10" style="edgeStyle=orthogonalEdgeStyle;exitX=0.417;exitY=0.992;exitDx=0;exitDy=0;exitPerimeter=0;" target="K454XlzO2SYgQW8Kxkkl-19" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="97" y="580" />
+              <mxPoint x="97" y="580" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="K454XlzO2SYgQW8Kxkkl-21" edge="1" parent="1" source="K454XlzO2SYgQW8Kxkkl-16" style="edgeStyle=orthogonalEdgeStyle;fontSize=11;" target="K454XlzO2SYgQW8Kxkkl-19" value="write-through">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="K454XlzO2SYgQW8Kxkkl-22" parent="1" style="rounded=1;whiteSpace=wrap;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;fontSize=13;fontStyle=0" value="Monitoring &#xa;(Prometheus / Grafana)" vertex="1">
+          <mxGeometry height="44" width="300" x="220" y="790" as="geometry" />
+        </mxCell>
+        <mxCell id="K454XlzO2SYgQW8Kxkkl-23" edge="1" parent="1" source="K454XlzO2SYgQW8Kxkkl-16" style="edgeStyle=orthogonalEdgeStyle;" target="K454XlzO2SYgQW8Kxkkl-22" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
